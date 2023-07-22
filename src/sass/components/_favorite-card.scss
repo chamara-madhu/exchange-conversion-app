@@ -1,0 +1,27 @@
+.favorite-card-item-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+
+  .card-image {
+    width: 50px;
+    height: 50px;
+    border-radius: 8px;
+    border: 1px solid $colorCCCCCC;
+    object-fit: contain;
+    margin-right: 10px;
+  }
+
+  .title {
+    font-size: 14px;
+  }
+
+  .delete-btn {
+    cursor: pointer;
+
+    &:hover {
+      color: $colorFF0000;
+    }
+  }
+}
