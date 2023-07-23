@@ -69,47 +69,39 @@ const Home = ({ convertedRates, convertExchangeRatesAction }) => {
           isDisabled={form.from === form.to || !form.amount}
         />
       </div>
-      <div className="result-container">
-        <Table bordered responsive style={{ width: 500 }}>
-          <tbody>
-            <tr>
-              <th>Currency Rates</th>
-              <th>Exchange rate</th>
-              <th>Converted amount</th>
-            </tr>
-            <tr>
-              <td>Public currency rates</td>
-              <td>
-                {convertedRates?.to}{" "}
-                {(
-                  convertedRates?.publicCurrencyRates?.exchangeRate || 0
-                ).toFixed(2)}
-              </td>
-              <td>
-                {convertedRates?.to}{" "}
-                {(
-                  convertedRates?.publicCurrencyRates?.exchangedAmount || 0
-                ).toFixed(2)}
-              </td>
-            </tr>
-            <tr>
-              <td>Corporate currency rates</td>
-              <td>
-                {convertedRates?.to}{" "}
-                {(
-                  convertedRates?.corporateCurrencyRates?.exchangeRate || 0
-                ).toFixed(2)}
-              </td>
-              <td>
-                {convertedRates?.to}{" "}
-                {(
-                  convertedRates?.corporateCurrencyRates?.exchangedAmount || 0
-                ).toFixed(2)}
-              </td>
-            </tr>
-          </tbody>
-        </Table>
-      </div>
+      {convertedRates?.to && (
+        <div className="result-container">
+          <Table bordered responsive style={{ width: 500 }}>
+            <tbody>
+              <tr>
+                <th>Currency Rates</th>
+                <th>Exchange rate</th>
+                <th>Converted amount</th>
+              </tr>
+              <tr>
+                <td>Public currency rates</td>
+                <td>
+                  {convertedRates?.to}{" "}
+                  {(
+                    convertedRates?.publicCurrencyRates?.exchangeRate || 0
+                  ).toFixed(2)}
+                </td>
+                <td>
+                  {convertedRates?.to}{" "}
+                  {(
+                    convertedRates?.publicCurrencyRates?.exchangedAmount || 0
+                  ).toFixed(2)}
+                </td>
+              </tr>
+              <tr>
+                <td>Corporate currency rates</td>
+                <td>-</td>
+                <td>-</td>
+              </tr>
+            </tbody>
+          </Table>
+        </div>
+      )}
     </div>
   );
 };
