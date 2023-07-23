@@ -1,0 +1,11 @@
+.form-control,
+.form-select {
+  &:focus {
+    border: 1px solid;
+    box-shadow: none;
+  }
+}
+
+.form-select {
+  cursor: pointer;
+}

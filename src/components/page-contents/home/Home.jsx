@@ -1,77 +1,123 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Container } from "react-bootstrap";
-import { FiSearch } from "react-icons/fi";
+import React, { useState, useCallback } from "react";
+import { FaExchangeAlt } from "react-icons/fa";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
-import CocktailCard from "../../shared/cards/CocktailCard";
 import TextField from "../../shared/inputs/TextField";
-import {
-  getAllCocktails,
-  searchCocktails,
-} from "../../../redux/actions/cocktailActions";
 import CommonButton from "../../shared/buttons/CommonButton";
+import Select from "../../shared/inputs/Select";
+import { fetchAndConvertExchangeRates } from "../../../redux/actions/exchangeRatesActions";
+import { Table } from "react-bootstrap";
 
-const Home = ({
-  cocktailList,
-  getAllCocktailsAction,
-  searchCocktailsAction,
-}) => {
-  const [keyword, setKeyword] = useState("");
+const Home = ({ convertedRates, convertExchangeRatesAction }) => {
+  const [form, setForm] = useState({
+    amount: null,
+    from: "USD",
+    to: "EUR",
+  });
 
-  useEffect(() => {
-    getAllCocktailsAction();
-  }, [getAllCocktailsAction]);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
 
-  const handleSearch = useCallback(() => {
-    if (keyword) {
-      searchCocktailsAction(keyword);
+    setForm({
+      ...form,
+      [name]: value,
+    });
+  };
+
+  const handleConvert = useCallback(() => {
+    const { from, to, amount } = form;
+
+    if (amount) {
+      convertExchangeRatesAction(from, to, amount);
     }
-  }, [keyword, searchCocktailsAction]);
-
-  const handleRefresh = useCallback(() => {
-    getAllCocktailsAction();
-  }, [getAllCocktailsAction]);
+  }, [form, convertExchangeRatesAction]);
 
   return (
-    <>
-      <div className="header-container">
-        <div className="search-field-wrapper">
-          <TextField
-            value={keyword}
-            handleChange={(e) => setKeyword(e.target.value)}
-          />
-          <span className="search-btn" onClick={handleSearch}>
-            <FiSearch />
-          </span>
-        </div>
+    <div className="currency-main-container">
+      <div className="currency-form-container">
+        <TextField
+          type="number"
+          label="Amount"
+          min={1}
+          name="amount"
+          value={form.amount}
+          handleChange={handleChange}
+        />
+        <Select
+          label="From"
+          name="from"
+          value={form.from}
+          handleChange={handleChange}
+        >
+          <option value="EUR">EUR</option>
+          <option value="USD">USD</option>
+        </Select>
+        <FaExchangeAlt className="conversion-icon" />
+        <Select
+          label="To"
+          name="to"
+          value={form.to}
+          handleChange={handleChange}
+        >
+          <option value="USD">USD</option>
+          <option value="EUR">EUR</option>
+        </Select>
+        <CommonButton
+          label="Convert"
+          handleBtn={handleConvert}
+          cusClass="convert-btn"
+          isDisabled={form.from === form.to || !form.amount}
+        />
       </div>
-      <Container className="py-5">
-        <div className="sub-header-bar">
-          <p className="showing-results">
-            Showing {cocktailList?.length} results
-          </p>
-          <CommonButton
-            label="Refresh"
-            handleBtn={handleRefresh}
-            size="sm"
-            variant="outline-dark"
-          />
-        </div>
-        <div className="card-container">
-          {cocktailList.map(
-            (item, i) => item?.idDrink && <CocktailCard item={item} key={i} />
-          )}
-        </div>
-      </Container>
-    </>
+      <div className="result-container">
+        <Table bordered responsive style={{ width: 500 }}>
+          <tbody>
+            <tr>
+              <th>Currency Rates</th>
+              <th>Exchange rate</th>
+              <th>Converted amount</th>
+            </tr>
+            <tr>
+              <td>Public currency rates</td>
+              <td>
+                {convertedRates?.to}{" "}
+                {(
+                  convertedRates?.publicCurrencyRates?.exchangeRate || 0
+                ).toFixed(2)}
+              </td>
+              <td>
+                {convertedRates?.to}{" "}
+                {(
+                  convertedRates?.publicCurrencyRates?.exchangedAmount || 0
+                ).toFixed(2)}
+              </td>
+            </tr>
+            <tr>
+              <td>Corporate currency rates</td>
+              <td>
+                {convertedRates?.to}{" "}
+                {(
+                  convertedRates?.corporateCurrencyRates?.exchangeRate || 0
+                ).toFixed(2)}
+              </td>
+              <td>
+                {convertedRates?.to}{" "}
+                {(
+                  convertedRates?.corporateCurrencyRates?.exchangedAmount || 0
+                ).toFixed(2)}
+              </td>
+            </tr>
+          </tbody>
+        </Table>
+      </div>
+    </div>
   );
 };
 
 const matchDispatchToProps = (dispatch) => {
   return bindActionCreators(
     {
-      getAllCocktailsAction: getAllCocktails,
-      searchCocktailsAction: searchCocktails,
+      convertExchangeRatesAction: fetchAndConvertExchangeRates,
     },
     dispatch
   );
@@ -79,7 +125,7 @@ const matchDispatchToProps = (dispatch) => {
 
 const mapStateToProps = (state) => {
   return {
-    cocktailList: state?.cocktailList?.data || [],
+    convertedRates: state?.convertedRates?.data || {},
   };
 };
 

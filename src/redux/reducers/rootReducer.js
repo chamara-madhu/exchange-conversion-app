@@ -1,10 +1,8 @@
 import { combineReducers } from "redux";
-import cocktailReducer from "./cocktailReducer";
-import favoriteReducer from "./favoriteReducer";
+import exchangeRatesReducer from "./exchangeRatesReducer";
 
 const rootReducer = combineReducers({
-  cocktailList: cocktailReducer,
-  favoriteList: favoriteReducer,
+  convertedRates: exchangeRatesReducer,
 });
 
 export default rootReducer;

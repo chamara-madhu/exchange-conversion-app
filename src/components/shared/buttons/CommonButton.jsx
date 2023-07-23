@@ -7,6 +7,7 @@ const CommonButton = ({
   variant,
   cusClass = "",
   handleBtn,
+  isDisabled = false,
 }) => {
   return (
     <Button
@@ -14,6 +15,7 @@ const CommonButton = ({
       onClick={handleBtn}
       size={size}
       variant={variant}
+      disabled={isDisabled}
     >
       {label}
     </Button>

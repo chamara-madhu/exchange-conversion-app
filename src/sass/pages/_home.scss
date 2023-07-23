@@ -1,63 +1,65 @@
-.header-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: $color212529;
-  height: 150px;
+body {
+  background: $colorFCCD12;
+}
 
-  .search-field-wrapper {
-    position: absolute;
-    width: 300px;
+.currency-main-container {
+  padding: 50px;
 
-    .form-control {
-      border-radius: 18px;
+  .currency-form-container {
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    gap: 10px;
 
-      &:focus {
-        outline: 0;
-        box-shadow: none;
-      }
+    .conversion-icon {
+      margin-bottom: 10px;
     }
 
-    .search-btn {
-      display: flex;
-      position: absolute;
-      top: 4px;
-      right: 6px;
-      background: $color212529;
-      color: $colorCCCCCC;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
+    .convert-btn {
+      background: $color000000;
+      border: 1px solid $color000000;
 
       &:hover {
-        background: $color212529;
-        color: $colorCCCCCC;
+        color: $colorFCCD12;
       }
     }
+  }
 
-    @media (max-width: 575px) {
-      width: 280px;
+  .result-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .currency-main-container {
+    .currency-form-container {
+      display: block;
+
+      label {
+        margin-top: 15px;
+      }
+
+      .conversion-icon {
+        display: none;
+      }
+
+      .convert-btn {
+        width: 100%;
+        margin-top: 20px;
+      }
     }
   }
 }
 
-.sub-header-bar {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  padding-bottom: 8px;
-
-  .showing-results {
-    font-size: 14px;
-    margin-bottom: 0;
+@media (max-width: 575px) {
+  .currency-main-container {
+    padding: 20px;
   }
-}
 
-.card-container {
-  display: flex;
-  flex-flow: wrap;
-  gap: 20px;
+  .result-container {
+    margin-top: 30px;
+  }
 }
